@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Index of {{path}}</title>
+  </head>
+  <body>
+    <h1>Index of {{path}}</h1>
+    <a href="{{parent}}">Parent Directory</a>
+    <br><br>
+    {{#contents}}
+    <a href="{{url}}">{{name}}</a> - {{size}} <br>
+    {{/contents}}
+  </body>
+</html>
