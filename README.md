@@ -13,11 +13,35 @@ Install go-bindata (if you don't already have it) like this:
     go get -u github.com/jteeuwen/go-bindata
     go install github.com/jteeuwen/go-bindata/go-bindata
 
-Generate the bindata
+Generate the bindata:
 
     cd lib
     go-bindata -debug -pkg=fsserver assets/...
     cd -
+
+Finally, you can install fsserver:
+
+    go install .
+
+# Usage
+
+You can run fsserver from the command line. Here is the usage:
+
+    -index="index.html": the index filename
+    -path=".": the directory to serve
+    -port=80: server port number
+    -silent=false: disable logging
+
+For example, you can serve the directory "/Users/alex/Desktop" on the port 8080 using this command:
+
+    fsserver -path=/Users/alex/Desktop -port=8080
+
+# TODO
+
+ * Human-readable file sizes
+ * Style the directory listing page
+ * Implement index.html support
+ * Send the "Content-Length" header
 
 # License
 
