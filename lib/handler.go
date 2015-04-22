@@ -3,6 +3,7 @@ package fsserver
 import (
 	"log"
 	"net/http"
+	"path"
 )
 
 type Handler struct {
@@ -14,6 +15,16 @@ type Handler struct {
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if h.serveOrFail(w, r) != nil {
 		ServeError(w, r)
+	}
+}
+
+func (h *Handler) serveDir(w http.ResponseWriter, r *http.Request,
+	file http.File) {
+	indexFile, err := h.FileSystem.Open(path.Join(r.URL.Path, h.IndexName))
+	if err != nil {
+		ServeDir(w, r, file)
+	} else {
+		ServeFile(w, r, indexFile)
 	}
 }
 
@@ -34,7 +45,7 @@ func (h *Handler) serveOrFail(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if info.IsDir() {
-		ServeDir(w, r, file)
+		h.serveDir(w, r, file)
 	} else {
 		ServeFile(w, r, file)
 	}

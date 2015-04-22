@@ -4,7 +4,7 @@
 
 # Dependencies & Setup
 
-Get the dependencies like this:
+You can get the dependencies like this:
 
     go get github.com/hoisie/mustache
 
@@ -32,7 +32,7 @@ You can run fsserver from the command line. Here is the usage:
     -port=80: server port number
     -silent=false: disable logging
 
-For example, you can serve the directory "/Users/alex/Desktop" on the port 8080 using this command:
+For example, you can serve the directory "/Users/alex/Desktop" on port 8080 using this command:
 
     fsserver -path=/Users/alex/Desktop -port=8080
 
@@ -40,7 +40,6 @@ For example, you can serve the directory "/Users/alex/Desktop" on the port 8080 
 
  * Human-readable file sizes
  * Style the directory listing page
- * Implement index.html support
  * Send the "Content-Length" header
 
 # License

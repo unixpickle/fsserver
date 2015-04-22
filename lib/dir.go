@@ -19,14 +19,16 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 	for _, fileInfo := range fileInfos {
 		name := fileInfo.Name()
 		size := strconv.FormatInt(fileInfo.Size(), 10)
+		url := path.Join(r.URL.Path, fileInfo.Name())
 		if fileInfo.IsDir() {
 			name += "/"
 			size = "-"
+			url += "/"
 		}
 		fileTemplate := map[string]string{
 			"name": name,
 			"size": size,
-			"url":  path.Join(r.URL.Path, fileInfo.Name()),
+			"url": url,
 		}
 		fileTemplates = append(fileTemplates, fileTemplate)
 	}
