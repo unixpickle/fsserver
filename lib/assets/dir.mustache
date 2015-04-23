@@ -2,13 +2,33 @@
 <html>
   <head>
     <title>Index of {{path}}</title>
+    <style type="text/css">
+    {{{bootstrapCSS}}}
+    </style>
   </head>
   <body>
-    <h1>Index of {{path}}</h1>
-    <a href="{{parent}}">Parent Directory</a>
-    <br><br>
-    {{#contents}}
-    <a href="{{url}}">{{name}}</a> - {{size}} <br>
-    {{/contents}}
+    <div class="container">
+      <h1 class="h1 text-center">Index of {{path}}</h1>
+      <div class="text-center">
+        <a class="btn btn-default" type="button" href="{{parent}}">Go to parent</a>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#contents}}
+          <tr>
+            <td><a href="{{url}}">{{name}}</a></td>
+            <td>{{size}}</td>
+          </tr>
+          {{/contents}}
+        </tbody>
+      </table>
+      
+    </div>
   </body>
 </html>

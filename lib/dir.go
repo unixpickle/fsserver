@@ -17,26 +17,45 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 
 	fileTemplates := []map[string]string{}
 	for _, fileInfo := range fileInfos {
-		name := fileInfo.Name()
-		size := strconv.FormatInt(fileInfo.Size(), 10)
-		url := path.Join(r.URL.Path, fileInfo.Name())
-		if fileInfo.IsDir() {
-			name += "/"
-			size = "-"
-			url += "/"
+		if !fileInfo.IsDir() {
+			continue
 		}
 		fileTemplate := map[string]string{
-			"name": name,
-			"size": size,
-			"url": url,
+			"name": fileInfo.Name() + "/",
+			"size": "-",
+			"url": path.Join(r.URL.Path, fileInfo.Name()) + "/",
+		}
+		fileTemplates = append(fileTemplates, fileTemplate)
+	}
+	for _, fileInfo := range fileInfos {
+		if fileInfo.IsDir() {
+			continue
+		}
+		fileTemplate := map[string]string{
+			"name": fileInfo.Name(),
+			"size": strconv.FormatInt(fileInfo.Size(), 10),
+			"url": path.Join(r.URL.Path, fileInfo.Name()),
 		}
 		fileTemplates = append(fileTemplates, fileTemplate)
 	}
 
+	bootstrapData, err := Asset("assets/bootstrap.min.css")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	parent := r.URL.Path
+	if len(parent) > 0 && parent[len(parent) - 1] == '/' {
+		parent = parent[0 : len(parent)-1]
+	}
+	parent = path.Dir(parent)
+	
 	template := map[string]interface{}{
 		"path":     r.URL.Path,
-		"parent":   path.Dir(r.URL.Path),
+		"parent":   parent,
 		"contents": fileTemplates,
+		"bootstrapCSS": string(bootstrapData),
 	}
 
 	data, err := Asset("assets/dir.mustache")
