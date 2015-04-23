@@ -7,7 +7,17 @@ import (
 )
 
 func ServeError(w http.ResponseWriter, r *http.Request) {
-	template := map[string]interface{}{"path": r.URL.Path}
+	bootstrapData, err := Asset("assets/bootstrap.min.css")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	template := map[string]interface{}{
+		"bootstrapCSS": string(bootstrapData),
+		"parent":       PathParent(r.URL.Path),
+		"path":         r.URL.Path,
+	}
 	data, err := Asset("assets/404.mustache")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

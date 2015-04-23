@@ -23,7 +23,7 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 		fileTemplate := map[string]string{
 			"name": fileInfo.Name() + "/",
 			"size": "-",
-			"url": path.Join(r.URL.Path, fileInfo.Name()) + "/",
+			"url":  path.Join(r.URL.Path, fileInfo.Name()) + "/",
 		}
 		fileTemplates = append(fileTemplates, fileTemplate)
 	}
@@ -34,7 +34,7 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 		fileTemplate := map[string]string{
 			"name": fileInfo.Name(),
 			"size": strconv.FormatInt(fileInfo.Size(), 10),
-			"url": path.Join(r.URL.Path, fileInfo.Name()),
+			"url":  path.Join(r.URL.Path, fileInfo.Name()),
 		}
 		fileTemplates = append(fileTemplates, fileTemplate)
 	}
@@ -45,16 +45,10 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 		return
 	}
 
-	parent := r.URL.Path
-	if len(parent) > 0 && parent[len(parent) - 1] == '/' {
-		parent = parent[0 : len(parent)-1]
-	}
-	parent = path.Dir(parent)
-	
 	template := map[string]interface{}{
-		"path":     r.URL.Path,
-		"parent":   parent,
-		"contents": fileTemplates,
+		"path":         r.URL.Path,
+		"parent":       PathParent(r.URL.Path),
+		"contents":     fileTemplates,
 		"bootstrapCSS": string(bootstrapData),
 	}
 
