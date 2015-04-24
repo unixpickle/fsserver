@@ -2,31 +2,23 @@
 
 **fsserver** (pronounced "FS server") is an HTTP server which serves contents from the filesystem. It supports directory listings, index files, and various MIME types.
 
-# Dependencies & Setup
+# Installation
 
-You can get the dependencies like this:
+This project is written in [Go](https://golang.org/doc/install). You will need Go in order to compile it from source.
 
-    go get github.com/hoisie/mustache
-    go get github.com/dustin/go-humanize
+You can download the repository like this:
 
-Install go-bindata (if you don't already have it) like this:
+    go get -u github.com/unixpickle/fsserver
 
-    go get -u github.com/jteeuwen/go-bindata
-    go install github.com/jteeuwen/go-bindata/go-bindata
+And install it like this:
 
-Generate the bindata:
+    go install github.com/unixpickle/fsserver
 
-    cd lib
-    go-bindata -debug -pkg=fsserver assets/...
-    cd -
-
-Finally, you can install fsserver:
-
-    go install .
+You should now have an `fsserver` command.
 
 # Usage
 
-You can run fsserver from the command line. Here is the usage:
+The `fsserver` command can take the following options:
 
     -index="index.html": the index filename
     -path=".": the directory to serve
@@ -37,10 +29,23 @@ For example, you can serve the directory "/Users/alex/Desktop" on port 8080 usin
 
     fsserver -path=/Users/alex/Desktop -port=8080
 
+# Updating [lib/bindata.go](lib/bindata.go)
+
+Notice that web-related files are stored in the [lib/assets](lib/assets) directory. Changing files in this directory will not update them in the Go code; the Go code uses [go-bindata](https://github.com/jteeuwen/go-bindata) to compile these assets statically.
+
+So, if you don't have go-bindata, install it like this:
+
+    go get -u github.com/jteeuwen/go-bindata
+    go install github.com/jteeuwen/go-bindata/go-bindata
+
+Now you can generate bindata.go from the assets directory:
+
+    cd lib
+    go-bindata -pkg=fsserver assets/...
+    cd -
+
 # TODO
 
- * Human-readable file sizes
- * Style the directory listing page
  * Send the "Content-Length" header
 
 # License
