@@ -7,6 +7,7 @@
 You can get the dependencies like this:
 
     go get github.com/hoisie/mustache
+    go get github.com/dustin/go-humanize
 
 Install go-bindata (if you don't already have it) like this:
 

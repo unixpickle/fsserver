@@ -3,8 +3,8 @@ package fsserver
 import (
 	"net/http"
 	"path"
-	"strconv"
 
+	"github.com/dustin/go-humanize"
 	"github.com/hoisie/mustache"
 )
 
@@ -33,7 +33,7 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 		}
 		fileTemplate := map[string]string{
 			"name": fileInfo.Name(),
-			"size": strconv.FormatInt(fileInfo.Size(), 10),
+			"size": humanize.Bytes(uint64(fileInfo.Size())),
 			"url":  path.Join(r.URL.Path, fileInfo.Name()),
 		}
 		fileTemplates = append(fileTemplates, fileTemplate)
