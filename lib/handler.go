@@ -11,12 +11,34 @@ type Handler struct {
 	FileSystem http.FileSystem
 	IndexName  string
 	Silent     bool
+	BasicAuth  string
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if h.serveOrFail(w, r) != nil {
+	if !h.authenticate(r) {
+		if !h.Silent {
+			log.Print("Unauthenticated request from: " + r.RemoteAddr)
+		}
+		w.Header().Set("WWW-Authenticate", "Basic realm=\"fsserver\"")
+		http.Error(w, "Login incorrect.", http.StatusUnauthorized)
+	} else if h.serveOrFail(w, r) != nil {
 		ServeError(w, r)
 	}
+}
+
+func (h *Handler) authenticate(r *http.Request) bool {
+	if h.BasicAuth == "" {
+		return true
+	}
+	username, password, ok := r.BasicAuth()
+	if !ok {
+		return false
+	}
+	comps := strings.Split(h.BasicAuth, ":")
+	if len(comps) != 2 {
+		log.Fatal("Invalid Basic Authentication argument")
+	}
+	return comps[0] == username && comps[1] == password
 }
 
 func (h *Handler) serveDir(w http.ResponseWriter, r *http.Request,
