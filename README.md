@@ -46,6 +46,7 @@ Now you can generate bindata.go from the assets directory:
 
 # TODO
 
+ * Support password protection
  * Send modification date in HTTP header for files
 
 # License
