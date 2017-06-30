@@ -44,10 +44,6 @@ Now you can generate bindata.go from the assets directory:
     go-bindata -pkg=fsserver assets/...
     cd -
 
-# TODO
-
- * Send modification date in HTTP header for files
-
 # License
 
 **fsserver** is licensed under the BSD 2-clause license. See [LICENSE](LICENSE).
