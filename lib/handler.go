@@ -70,6 +70,7 @@ func (h *Handler) serveOrFail(w http.ResponseWriter, r *http.Request) error {
 	if info.IsDir() {
 		if !strings.HasSuffix(r.URL.Path, "/") {
 			http.Redirect(w, r, r.URL.Path+"/", http.StatusTemporaryRedirect)
+			return nil
 		}
 		h.serveDir(w, r, file)
 	} else {
