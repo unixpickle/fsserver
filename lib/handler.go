@@ -47,7 +47,7 @@ func (h *Handler) serveDir(w http.ResponseWriter, r *http.Request,
 	if err != nil {
 		ServeDir(w, r, file)
 	} else {
-		ServeFile(w, r, indexFile)
+		ServeFile(w, r, h.IndexName, indexFile)
 	}
 }
 
@@ -74,7 +74,7 @@ func (h *Handler) serveOrFail(w http.ResponseWriter, r *http.Request) error {
 		}
 		h.serveDir(w, r, file)
 	} else {
-		ServeFile(w, r, file)
+		ServeFile(w, r, path.Base(r.URL.Path), file)
 	}
 
 	return nil
