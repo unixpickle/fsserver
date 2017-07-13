@@ -22,7 +22,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("WWW-Authenticate", "Basic realm=\"fsserver\"")
 		http.Error(w, "Login incorrect.", http.StatusUnauthorized)
 	} else if h.serveOrFail(w, r) != nil {
-		ServeError(w, r)
+		ServeNotFound(w, r)
 	}
 }
 

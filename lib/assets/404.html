@@ -1,16 +1,16 @@
 <!doctype html>
 <html>
   <head>
-    <title>404 - {{path}}</title>
+    <title>404 - {{.path}}</title>
     <style type="text/css">
-    {{{bootstrapCSS}}}
+    {{.bootstrapCSS}}
     </style>
   </head>
   <body>
     <div class="container">
-      <h2 class="h2 text-center">"{{path}}" not found.</h2>
+      <h2 class="h2 text-center">"{{.path}}" not found.</h2>
       <div class="text-center">
-        <a class="btn btn-default" type="button" href="{{parent}}">Go to parent</a>
+        <a class="btn btn-default" type="button" href="{{.parent}}">Go to parent</a>
         <a class="btn btn-default" type="button" href="/">Go to /</a>
       </div>
     </div>

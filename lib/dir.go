@@ -5,13 +5,12 @@ import (
 	"path"
 
 	"github.com/dustin/go-humanize"
-	"github.com/hoisie/mustache"
 )
 
 func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 	fileInfos, err := f.Readdir(0)
 	if err != nil {
-		ServeError(w, r)
+		ServeNotFound(w, r)
 		return
 	}
 
@@ -39,25 +38,9 @@ func ServeDir(w http.ResponseWriter, r *http.Request, f http.File) {
 		fileTemplates = append(fileTemplates, fileTemplate)
 	}
 
-	bootstrapData, err := Asset("assets/bootstrap.min.css")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	template := map[string]interface{}{
-		"path":         r.URL.Path,
-		"parent":       PathParent(r.URL.Path),
-		"contents":     fileTemplates,
-		"bootstrapCSS": string(bootstrapData),
-	}
-
-	data, err := Asset("assets/dir.mustache")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	content := mustache.Render(string(data), template)
-	w.Header().Set("Content-Type", "text/html")
-	w.Write([]byte(content))
+	ServeTemplate(w, "dir", map[string]interface{}{
+		"path":     r.URL.Path,
+		"parent":   PathParent(r.URL.Path),
+		"contents": fileTemplates,
+	})
 }
