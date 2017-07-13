@@ -10,17 +10,20 @@ import (
 )
 
 func main() {
+	var handler fsserver.Handler
+
 	port := flag.Int("port", 80, "server port number")
-	indexName := flag.String("index", "index.html", "the index filename")
 	path := flag.String("path", ".", "the directory to serve")
-	basicAuth := flag.String("auth", "", "username:password")
-	silent := flag.Bool("silent", false, "disable logging")
+	flag.StringVar(&handler.IndexName, "index", "index.html", "the index filename")
+	flag.StringVar(&handler.BasicAuth, "auth", "", "username:password")
+	flag.BoolVar(&handler.Silent, "silent", false, "disable logging")
 	flag.Parse()
 
+	handler.FileSystem = http.Dir(*path)
 	addr := ":" + strconv.Itoa(*port)
-	handler := &fsserver.Handler{http.Dir(*path), *indexName, *silent, *basicAuth}
-	err := http.ListenAndServe(addr, handler)
-	if err != nil && !*silent {
+
+	err := http.ListenAndServe(addr, &handler)
+	if err != nil && !handler.Silent {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
