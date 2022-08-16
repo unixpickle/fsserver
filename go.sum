@@ -1,0 +1,6 @@
+github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
+github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
+github.com/unixpickle/essentials v1.3.0 h1:H258Z5Uo1pVzFjxD2rwFWzHPN3s0J0jLs5kuxTRSfCs=
+github.com/unixpickle/essentials v1.3.0/go.mod h1:dQ1idvqrgrDgub3mfckQm7osVPzT3u9rB6NK/LEhmtQ=
+github.com/unixpickle/seektar v0.1.0 h1:WPwxO1nEGh9RrZxiQ8W6S+POGJ/8On0GJcYzjs3RN/8=
+github.com/unixpickle/seektar v0.1.0/go.mod h1:YLunf6tFVt3s6DMjrYuHC8vq5zihqvf2OZHpRPw8fbw=

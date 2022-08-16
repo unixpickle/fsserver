@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/unixpickle/fsserver/lib"
+	fsserver "github.com/unixpickle/fsserver/lib"
 )
 
 func main() {

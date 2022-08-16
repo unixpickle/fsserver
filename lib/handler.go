@@ -45,8 +45,13 @@ func (h *Handler) serveDir(w http.ResponseWriter, r *http.Request,
 	file http.File) {
 	indexFile, err := h.FileSystem.Open(path.Join(r.URL.Path, h.IndexName))
 	if err != nil {
-		ServeDir(w, r, file)
+		if r.URL.Query().Get("download") != "" {
+			ServeDirTar(w, r, h.FileSystem, r.URL.Path)
+		} else {
+			ServeDir(w, r, file)
+		}
 	} else {
+		defer indexFile.Close()
 		ServeFile(w, r, h.IndexName, indexFile)
 	}
 }
