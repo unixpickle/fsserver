@@ -1,6 +1,8 @@
 package fsserver
 
 import (
+	"crypto/sha256"
+	"crypto/subtle"
 	"log"
 	"net/http"
 	"path"
@@ -34,11 +36,19 @@ func (h *Handler) authenticate(r *http.Request) bool {
 	if !ok {
 		return false
 	}
-	comps := strings.Split(h.BasicAuth, ":")
-	if len(comps) != 2 {
-		log.Fatal("Invalid Basic Authentication argument")
+	expectedUsername, expectedPassword, valid := strings.Cut(h.BasicAuth, ":")
+	if !valid {
+		return false
 	}
-	return comps[0] == username && comps[1] == password
+
+	usernameHash := sha256.Sum256([]byte(username))
+	expectedUsernameHash := sha256.Sum256([]byte(expectedUsername))
+	passwordHash := sha256.Sum256([]byte(password))
+	expectedPasswordHash := sha256.Sum256([]byte(expectedPassword))
+
+	usernameMatch := subtle.ConstantTimeCompare(usernameHash[:], expectedUsernameHash[:])
+	passwordMatch := subtle.ConstantTimeCompare(passwordHash[:], expectedPasswordHash[:])
+	return usernameMatch&passwordMatch == 1
 }
 
 func (h *Handler) serveDir(w http.ResponseWriter, r *http.Request,

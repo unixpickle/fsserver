@@ -1,9 +1,13 @@
 package fsserver
 
 import (
+	"embed"
 	"html/template"
 	"net/http"
 )
+
+//go:embed assets
+var assets embed.FS
 
 func ServeTemplate(w http.ResponseWriter, name string, data map[string]interface{}) {
 	t, err := readTemplate(name)
@@ -12,7 +16,7 @@ func ServeTemplate(w http.ResponseWriter, name string, data map[string]interface
 		return
 	}
 
-	bootstrapData, err := Asset("assets/bootstrap.min.css")
+	bootstrapData, err := assets.ReadFile("assets/bootstrap.min.css")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -28,7 +32,7 @@ func ServeTemplate(w http.ResponseWriter, name string, data map[string]interface
 }
 
 func readTemplate(name string) (*template.Template, error) {
-	data, err := Asset("assets/" + name + ".html")
+	data, err := assets.ReadFile("assets/" + name + ".html")
 	if err != nil {
 		return nil, err
 	}

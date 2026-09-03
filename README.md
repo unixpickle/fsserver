@@ -4,15 +4,11 @@
 
 # Installation
 
-This project is written in [Go](https://golang.org/doc/install). You will need Go in order to compile it from source.
+This project is written in [Go](https://go.dev/doc/install). You will need Go 1.25 or newer in order to compile it from source.
 
-You can download the repository like this:
+Install it like this:
 
-    go get -u github.com/unixpickle/fsserver
-
-And install it like this:
-
-    go install github.com/unixpickle/fsserver
+    go install github.com/unixpickle/fsserver@latest
 
 You should now have an `fsserver` command.
 
@@ -29,20 +25,9 @@ For example, you can serve the directory "/Users/alex/Desktop" on port 8080 usin
 
     fsserver -path=/Users/alex/Desktop -port=8080
 
-# Updating [lib/bindata.go](lib/bindata.go)
+# Updating web assets
 
-Notice that web-related files are stored in the [lib/assets](lib/assets) directory. Changing files in this directory will not update them in the Go code; the Go code uses [go-bindata](https://github.com/jteeuwen/go-bindata) to compile these assets statically.
-
-So, if you don't have go-bindata, install it like this:
-
-    go get -u github.com/jteeuwen/go-bindata
-    go install github.com/jteeuwen/go-bindata/go-bindata
-
-Now you can generate bindata.go from the assets directory:
-
-    cd lib
-    go-bindata -pkg=fsserver assets/...
-    cd -
+Web-related files are stored in the [lib/assets](lib/assets) directory and embedded in the binary with [`go:embed`](https://pkg.go.dev/embed). Changes to these files are included automatically the next time the project is built; no generation step is needed.
 
 # License
 

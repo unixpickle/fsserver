@@ -19,10 +19,15 @@ func main() {
 	flag.BoolVar(&handler.Silent, "silent", false, "disable logging")
 	flag.Parse()
 
-	handler.FileSystem = http.Dir(*path)
+	fileSystem, err := fsserver.NewRootFileSystem(*path)
+	if err != nil {
+		log.Fatal("Open server root: ", err)
+	}
+	defer fileSystem.Close()
+	handler.FileSystem = fileSystem
 	addr := ":" + strconv.Itoa(*port)
 
-	err := http.ListenAndServe(addr, &handler)
+	err = http.ListenAndServe(addr, &handler)
 	if err != nil && !handler.Silent {
 		log.Fatal("ListenAndServe: ", err)
 	}
